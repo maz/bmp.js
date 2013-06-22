@@ -1,3 +1,5 @@
+//Copyright (c) 2013 Marc Rosen, licensed under the MIT License.
+
 this.BMP=(function(){
 	//The following two functions are from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Base64_encoding_and_decoding
 	function uint6ToB64 (nUint6) {
