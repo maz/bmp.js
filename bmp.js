@@ -1,41 +1,6 @@
 //Copyright (c) 2013 Marc Rosen, licensed under the MIT License.
 
 this.BMP=(function(){
-	//The following two functions are from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Base64_encoding_and_decoding
-	function uint6ToB64 (nUint6) {
-
-	  return nUint6 < 26 ?
-	      nUint6 + 65
-	    : nUint6 < 52 ?
-	      nUint6 + 71
-	    : nUint6 < 62 ?
-	      nUint6 - 4
-	    : nUint6 === 62 ?
-	      43
-	    : nUint6 === 63 ?
-	      47
-	    :
-	      65;
-
-	}
-
-	function base64EncArr (aBytes) {
-
-	  var nMod3, sB64Enc = "";
-
-	  for (var nLen = aBytes.length, nUint24 = 0, nIdx = 0; nIdx < nLen; nIdx++) {
-	    nMod3 = nIdx % 3;
-	    if (nIdx > 0 && (nIdx * 4 / 3) % 76 === 0) { sB64Enc += "\r\n"; }
-	    nUint24 |= aBytes[nIdx] << (16 >>> nMod3 & 24);
-	    if (nMod3 === 2 || aBytes.length - nIdx === 1) {
-	      sB64Enc += String.fromCharCode(uint6ToB64(nUint24 >>> 18 & 63), uint6ToB64(nUint24 >>> 12 & 63), uint6ToB64(nUint24 >>> 6 & 63), uint6ToB64(nUint24 & 63));
-	      nUint24 = 0;
-	    }
-	  }
-
-	  return sB64Enc.replace(/A(?=A$|$)/g, "=");
-
-	}
 	var header=new Uint8Array([
 		0x42, 0x4D,
 		0x00, 0x00, 0x00, 0x00,//Little endian Size of file
@@ -85,8 +50,13 @@ this.BMP=(function(){
 		view.setInt32(0x22, pixel_sze, true);
 		this.pixels=this.data.subarray(header.length);
 	}
+	var BASE64_CHUNK_SIZE=100;//You get a stack overflow error if this is too high
 	BMP.prototype.toBase64=function(){
-		return base64EncArr(this.data);
+		var str="";
+		for(var i=0;i<this.data.length;i+=BASE64_CHUNK_SIZE){
+			str+=String.fromCharCode.apply(String, this.data.subarray(i, i+BASE64_CHUNK_SIZE));
+		}
+		return btoa(str);
 	};
 	BMP.prototype.toDataURL=function(){
 		return "data:image/bmp;base64,"+this.toBase64();

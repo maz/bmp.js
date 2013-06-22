@@ -5,7 +5,7 @@
 	<script src="bmp.js" type="text/javascript" charset="utf-8"></script>
 	<style type="text/css" media="screen">
 	html, body{
-		background-color:rgb(100, 100, 0);
+		/*background-color:rgb(100, 100, 0);*/
 	}
 	</style>
 	<script type="text/javascript" charset="utf-8">
@@ -13,7 +13,7 @@
 		function rand(){
 			return (Math.random()*255)|0;
 		}
-		window.img=new BMP(640, 480)
+		window.img=new BMP(640, 480);
 		for(var i=0;i<img.pixels.length;){
 			img.pixels[(i++)]=100;
 			img.pixels[(i++)]=100;
