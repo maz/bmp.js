@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BMP.js</title>
+	<script src="bmp.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+	window.onload=function(){
+		function rand(){
+			return (Math.random()*255)|0;
+		}
+		window.img=new BMP(640, 480)
+		for(var i=0;i<img.pixels.length;){
+			img.pixels[(i++)]=rand();
+			img.pixels[(i++)]=rand();
+			img.pixels[(i++)]=rand();
+			img.pixels[(i++)]=255;
+		}
+		document.getElementById('img').src=img.toDataURL();
+	};
+	</script>
+</head>
+<body>
+	<img id="img" style="background-color:blue;"/>
+</body>
+</html>
