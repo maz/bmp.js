@@ -69,7 +69,7 @@ this.BMP=(function(){
 	]);
 	function BMP(w, h){
 		//Note, we set the BMP to be in sRGB color space
-		var pixel_sze=w*h;
+		var pixel_sze=4*w*h;
 		var sze=header.length+pixel_sze;
 		this.data=new Uint8Array(sze);
 		this.data.set(header);
@@ -79,7 +79,7 @@ this.BMP=(function(){
 		var view=new DataView(this.data.buffer);
 		view.setInt32(0x02, sze, true);
 		view.setInt32(0x12, w, true);
-		view.setInt32(0x16, -1*h, true);
+		view.setInt32(0x16, -h, true);
 		view.setInt32(0x22, pixel_sze, true);
 		this.pixels=this.data.subarray(header.length);
 	}
